@@ -10,10 +10,17 @@ import Input from "../shared/InputStyle";
 
 export default function Login({ etName, setToken }) {
     const history = useHistory();
+    const token = useContext(UserContext);
+    if (token) {
+        console.log(token)
+    }
+    
 
     const name = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [list, setList] = useState([]);
 
     function login() {
         const body = {

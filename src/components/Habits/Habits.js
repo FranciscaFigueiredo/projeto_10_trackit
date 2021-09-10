@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import Footer from "../Footer";
@@ -9,20 +9,31 @@ import ShowHabits from "./ShowHabits";
 
 export default function Habits() {
     const user = useContext(UserContext)
-    console.log(user)
+    const [addHabit, setAddHabit] = useState(false);
+    const [habits, setHabits] = useState([])
+    console.log(user);
+    
+    useEffect(() => {
+        
+    }, [])
+
+    function createHabit() {
+        setAddHabit(true);
+    }
+
     return (
         <>
             <Header />
-            <PageTitle />
+            <PageTitle createHabit={createHabit} />
             {/* <ShowHabits /> */}
-            <CreateHabits />
-            <Paragrafo>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear! {user}</Paragrafo>
+            <CreateHabits addHabit={addHabit} setAddHabit={setAddHabit} />
+            <Paragraph>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Paragraph>
             <Footer />
         </>
     );
 }
 
-const Paragrafo = styled.p`
+const Paragraph = styled.p`
     font-size: 18px;
     line-height: 22px;
     color: #666666;

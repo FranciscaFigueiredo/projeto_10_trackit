@@ -6,7 +6,6 @@ import { createGlobalStyle } from 'styled-components'
 import UserContext from "./contexts/UserContext";
 
 import Habits from "./Habits/Habits";
-import Header from "./Header";
 import CreateLogin from "./Login/CreateLogin";
 import Login from "./Login/Login";
 
@@ -18,10 +17,9 @@ export default function App() {
     const [token, setToken] = useState(null)
 
     return (
-        <UserContext.Provider value={user} >
+        <UserContext.Provider value={{user, token}} >
             <BrowserRouter>
                 <Page>
-                {/* <Header /> */}
                     <Container>
                         <Switch>
                             <Route path="/" exact>

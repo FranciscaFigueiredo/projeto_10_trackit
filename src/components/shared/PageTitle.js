@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-export default function PageTitle() {
+export default function PageTitle({createHabit}) {
     return (
         <Top>
             <h2>Meus hábitos</h2>
-            <AddHabit>+</AddHabit>
+            <AddHabit onClick={() => (createHabit())}>+</AddHabit>
         </Top>
     );
 }

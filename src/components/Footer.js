@@ -12,7 +12,7 @@ export default function Footer() {
                 <H4>Hábitos</H4>
                 
                 <ProgressBar>
-                    <Example label="">
+                    <Circle label="">
                         <CircularProgressbar
                             value="33%"
                             text="Hoje"
@@ -25,12 +25,24 @@ export default function Footer() {
                                 trailColor: "transparent"
                             })}
                         />
-                    </Example>
+                    </Circle>
                 </ProgressBar>
                 <H4>Histórico</H4>
             </FooterContent>
         </FooterStyle>
         
+    );
+}
+
+function Circle(props) {
+    return (
+        <>
+            <div style={{ marginBottom: 60 }}>
+            <div style={{ marginTop: 30, display: "flex" }}>
+                <div style={{ width: "85px" }}>{props.children}</div>
+            </div>
+            </div>
+        </>
     );
 }
 
@@ -91,16 +103,3 @@ const ProgressBar = styled.div`
 //     background-color: #ffffff;
 //     border-radius: 50%;
 // `
-
-
-function Example(props) {
-    return (
-        <>
-            <div style={{ marginBottom: 60 }}>
-            <div style={{ marginTop: 30, display: "flex" }}>
-                <div style={{ width: "85px" }}>{props.children}</div>
-            </div>
-            </div>
-        </>
-    );
-}

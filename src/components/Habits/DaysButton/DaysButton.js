@@ -1,8 +1,11 @@
+import { useState } from "react";
 import styled from "styled-components";
 
-export default function DaysButton({ day, index }) {
+export default function DaysButton({ day, index, selectDay }) {
     return (
-        <DaysStyle index={index} >{day}</DaysStyle>
+        <DaysStyle index={index} onClick={() => {
+            selectDay(index);
+        }} >{day}</DaysStyle>
     );
 }
 

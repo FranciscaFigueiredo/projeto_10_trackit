@@ -12,7 +12,19 @@ function postLogInto(body) {
     return promise;
 }
 
+function postHabit(body, config) {
+    const promise = axios.post(`${BASE_URL}/habits`, body, config);
+    return promise;
+}
+
+function getHabit(config) {
+    const promise = axios.post(`${BASE_URL}/habits`, config);
+    return promise;
+}
+
 export {
     postSubscription,
-    postLogInto
+    postLogInto,
+    postHabit,
+    getHabit
 }

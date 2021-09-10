@@ -1,22 +1,65 @@
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { postHabit } from "../../service/trackIt";
+import UserContext from "../contexts/UserContext";
 import Input from "../shared/InputStyle";
 import DaysButton from "./DaysButton/DaysButton";
 
-export default function CreateHabits() {
-    const days = ["D", "S", "T", "Q", "Q", "S", "S"]
+export default function CreateHabits({addHabit, setAddHabit}) {
+    const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
+    const {user, token} = useContext(UserContext)
+    console.log(addHabit)
+    const [habit, setHabit] = useState("");
+    const [days, setDays] = useState([]);
+    
+    console.log(days)
+
+    function selectDay(day) {
+        if (!days.includes(day)) {
+            setDays([...days, day]);
+        }
+    }
+
+    function saveHabit() {
+        const body = {
+            name: habit,
+            days: days
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        console.log(body, config);
+        postHabit(body, config).then((res) => console.log(res)).catch((err) => console.error)
+    }
+
     return (
-        <Create>
-            <Definition>
-                <Input placeholder="nome do hábito" ></Input>
-                <Buttons>
-                    {days.map((day, index) => (<DaysButton key={index} day={day} index={index} />))}
-                </Buttons>
-            </Definition>
-            <Actions>
-                <Action name="cancel">Cancelar</Action>
-                <Action name="save">Salvar</Action>
-            </Actions>
-        </Create>
+        <>
+            {
+                addHabit === true ?
+                <Create>
+                    <Definition>
+                        <Input placeholder="nome do hábito" value={habit} onChange={(event) => (setHabit(event.target.value))} ></Input>
+                        <Buttons>
+                            {weekdays.map((day, index) => (<DaysButton key={index} day={day} index={index} selectDay={selectDay} />))}
+                        </Buttons>
+                    </Definition>
+                    <Actions>
+                        <Action name="cancel" onClick={() => (setAddHabit(false))} >Cancelar</Action>
+                        <Action name="save" onClick={() => {
+                            saveHabit();
+                            setHabit("");
+                            setDays([]);
+                        }}>Salvar</Action>
+                    </Actions>
+                </Create>
+                : ""
+            }
+        </>
+        
     );
 }
 
