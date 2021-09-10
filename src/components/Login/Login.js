@@ -1,13 +1,16 @@
 import axios from "axios"
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { postLogInto } from "../../service/trackIt";
 
 import UserContext from "../contexts/UserContext";
 import Button from "../shared/ ButtonActions";
 import Input from "../shared/InputStyle";
 
 export default function Login({ etName, setToken }) {
+    const history = useHistory();
+
     const name = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,7 +21,11 @@ export default function Login({ etName, setToken }) {
             password
         }
         console.log(body)
-        axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body).then((res) => (setToken(res.data.token)));
+        postLogInto(body).then((res) => {
+            setToken(res.data.token)
+            history.push("/habitos")
+            console.log(res.data.token)
+        });
     }
 
     return (

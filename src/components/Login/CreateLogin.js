@@ -14,6 +14,7 @@ export default function CreateLogin() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    
     const history = useHistory();
 
     console.log(name,

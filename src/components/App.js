@@ -30,7 +30,9 @@ export default function App() {
                             <Route path="/cadastro">
                                 <CreateLogin name={user} setName={setUser} />
                             </Route>
-                            {/* <Habits /> */}
+                            <Route path="/habitos">
+                                <Habits />
+                            </Route>
                         </Switch>
                     </Container>
                 </Page>
