@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import UserContext from "../contexts/UserContext";
@@ -25,7 +26,10 @@ export default function Login({ etName, setToken }) {
             <Logo src="../../../assets/logo.png" value={name} />
             <Input type="email" placeholder="email" value={email} onChange={(event) => (setEmail(event.target.value))} />
             <Input type="password" placeholder="senha" value={password} onChange={(event) => (setPassword(event.target.value))} />
-            <Button onClick={() => login()}>Entrar</Button>
+            <Button type="submit" onClick={() => login()}>Entrar</Button>
+            <Link to="/cadastro">
+                Não tem uma conta? Cadastre-se!
+            </Link>
         </Logar>
     );
 }
@@ -46,4 +50,9 @@ const Logo = styled.img`
     width: 60vw;
     
     margin: 50px auto;
+`
+
+const Redirect = styled.a`
+    font-size: 13px;
+    color: #52B6FF;
 `

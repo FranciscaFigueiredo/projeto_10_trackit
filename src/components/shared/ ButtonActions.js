@@ -14,7 +14,7 @@ const Button = styled.button`
     font-size: 20px;
     font-family: 'Lexend Deca', sans-serif;
 
-    margin: 10px auto 0;
+    margin: 10px auto 20px;
 
     background-color: #52b6ff;
     border: none;

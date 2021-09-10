@@ -11,28 +11,32 @@ import CreateLogin from "./Login/CreateLogin";
 import Login from "./Login/Login";
 
 export default function App() {
-  const params = useParams();
-  console.log(params)
-  // const pageRoute = params
-  const [name, setName] = useState(null);
-  const [token, setToken] = useState(null)
+    // const params = useParams();
+    // console.log(params)
+    // const pageRoute = params
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null)
 
-  return (
-    <UserContext.Provider>
-      <BrowserRouter>
-        <Page>
-          {/* <Header /> */}
-          <Container>
-            <Switch>
-              {/* <Login setName={setName} setToken={setToken} /> */}
-              <CreateLogin name={name} setName={setName} setToken={setToken} />
-              {/* <Habits /> */}
-            </Switch>
-          </Container>
-        </Page>
-      </BrowserRouter>
-    </UserContext.Provider>
-  );
+    return (
+        <UserContext.Provider value={user} >
+            <BrowserRouter>
+                <Page>
+                {/* <Header /> */}
+                    <Container>
+                        <Switch>
+                            <Route path="/" exact>
+                                <Login setName={setUser} setToken={setToken} />
+                            </Route>
+                            <Route path="/cadastro">
+                                <CreateLogin name={user} setName={setUser} />
+                            </Route>
+                            {/* <Habits /> */}
+                        </Switch>
+                    </Container>
+                </Page>
+            </BrowserRouter>
+        </UserContext.Provider>
+    );
 }
 
 const Page = styled.div`
@@ -54,7 +58,7 @@ const Container = styled.div`
 `
 
 const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #F2F2F2;
-  }
+    body {
+        background-color: #F2F2F2;
+    }
 `

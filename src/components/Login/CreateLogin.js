@@ -1,37 +1,46 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { postSubscription } from "../../service/trackIt";
 import Button from "../shared/ ButtonActions";
 
 import ButtonActions from "../shared/ ButtonActions";
 import Input from "../shared/InputStyle";
 
-export default function CreateLogin({ name, setName, setToken }) {
-    
+export default function CreateLogin() {
+    // { name, setName }
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const [name, setName] = useState("");
+    const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    const history = useHistory();
 
+    console.log(name,
+        image,
+        email,
+        password)
     function createLogin() {
         const body = {
-            email,
-            password,
             name,
-            image
+            image,
+            email,
+            password
         }
-
-        axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body).then()
+        console.log(body);
+        postSubscription(body).then((res) => {
+            history.push("/")
+        }).catch((err) => console.error)
     }
 
     return (
         <Logar>
-            <Logo src="../../../assets/logo.png" value={name} />
-            <Input type="email" placeholder="email" value={email} onChange={(event) => (setEmail(event.target.value))} />
-            <Input type="password" placeholder="senha" value={password} onChange={(event) => (setPassword(event.target.value))} />
-            <Input type="text" placeholder="nome" value={name} onChange={(event) => (setName(event.target.value))} />
-            <Input type="text" placeholder="foto" value={image} onChange={(event) => (setImage(event.target.value))} />
-            <Button onClick={() => createLogin()}>Entrar</Button>
+            <Logo src="../../../assets/logo.png" />
+            <Input type="email" placeholder="email" required value={email} onChange={(event) => (setEmail(event.target.value))} />
+            <Input type="password" placeholder="senha" required value={password} onChange={(event) => (setPassword(event.target.value))} />
+            <Input type="text" placeholder="nome" required value={name} onChange={(event) => (setName(event.target.value))} />
+            <Input type="text" placeholder="foto" required value={image} onChange={(event) => (setImage(event.target.value))} />
+            <Button type="submit" onClick={() => createLogin()}>Entrar</Button>
         </Logar>
     );
 }
