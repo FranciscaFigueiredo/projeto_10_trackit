@@ -18,7 +18,12 @@ function postHabit(body, config) {
 }
 
 function getHabit(config) {
-    const promise = axios.post(`${BASE_URL}/habits`, config);
+    const promise = axios.get(`${BASE_URL}/habits`, config);
+    return promise;
+}
+
+function getTodayHabit(config) {
+    const promise = axios.get(`${BASE_URL}/habits/today`, config);
     return promise;
 }
 
@@ -26,5 +31,6 @@ export {
     postSubscription,
     postLogInto,
     postHabit,
-    getHabit
+    getHabit,
+    getTodayHabit
 }

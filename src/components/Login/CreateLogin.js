@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import Loader from "react-loader-spinner";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { postSubscription } from "../../service/trackIt";
-import Button from "../shared/ ButtonActions";
+import Button from "../shared/ButtonActions";
 
-import ButtonActions from "../shared/ ButtonActions";
+import ButtonActions from "../shared/ButtonActions";
 import Input from "../shared/InputStyle";
 
 export default function CreateLogin() {
@@ -14,6 +15,7 @@ export default function CreateLogin() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
+    const [nameButton, setNameButton] = useState("Cadastrar");
 
     const history = useHistory();
 
@@ -21,7 +23,18 @@ export default function CreateLogin() {
         image,
         email,
         password)
-    function createLogin() {
+    function createLogin(event) {
+        event.preventDefault();
+
+        setNameButton(
+        <Loader
+            type="ThreeDots"
+            color="#ffffff"
+            height={40}
+            width={60}
+            timeout={3000} //3 secs
+        />)
+
         const body = {
             name,
             image,
@@ -42,8 +55,8 @@ export default function CreateLogin() {
                 <Input type="email" placeholder="email" required value={email} onChange={(event) => (setEmail(event.target.value))} />
                 <Input type="password" placeholder="senha" required value={password} onChange={(event) => (setPassword(event.target.value))} />
                 <Input type="text" placeholder="nome" required value={name} onChange={(event) => (setName(event.target.value))} />
-                <Input type="text" placeholder="foto" required value={image} onChange={(event) => (setImage(event.target.value))} />
-                <Button type="submit">Entrar</Button>
+                <Input type="url" placeholder="foto" required value={image} onChange={(event) => (setImage(event.target.value))} />
+                <Button type="submit">{nameButton}</Button>
             </Form>
         </Logar>
     );

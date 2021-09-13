@@ -1,8 +1,10 @@
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br'
 
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { getTodayHabit } from "../../service/trackIt";
 
 import HabitContext from "../contexts/HabitContext";
 import UserContext from "../contexts/UserContext";
@@ -13,29 +15,63 @@ import PageTitle from "../shared/PageTitle";
 import Habit from "./Habit";
 
 export default function Today() {
-    const { habits } = useContext(UserContext)
+    let { token, habits, percentage, setPercentage } = useContext(UserContext)
+    const history = useHistory();
 
-    let pageTitle = dayjs().locale('pt-br').format('dddd - DD-MM');
+    let completed;
+    // let [percentage, setPercentage] = useState(0);
+    let [todayHabits, setTodayHabits] = useState([]);
+    // let percentage = 0;
+
+    let doneHabits = [];
+    
+    let pageTitle = dayjs().locale('pt-br').format('dddd, DD-MM');
 
     let habit;
     
-    console.log(habits)
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
 
-    if(!habits.find((habit) => habit.done === true)) {
-        habit = false;
+        const promise = getTodayHabit(config)
+        promise.then((res) => setTodayHabits(res.data)).catch((err) => console.error)
+
+        if(habits.length === 0) {
+            history.push("/habitos")
+        }
+    }, [])
+    // console.log(todayHabits)
+
+    if(todayHabits && todayHabits.find((habit) => habit.done === true)) {
+        habit = true;
     } else {
         habit = false;
     }
+    
+    if(doneHabits !== []) {
+        console.log(((100 * doneHabits.length) / habits.length))
+        completed = (100 * doneHabits.length) / habits.length
+        percentage = ((100 * doneHabits.length) / habits.length);
+    }
+
+    useEffect(() => {
+        setPercentage(completed);
+        console.log(percentage)
+    }, [])
+
     
     
     return (
         <>
             <Header />
-            <PageTitle habit={habit} pageTitle={pageTitle} />
+            <PageTitle habit={habit} pageTitle={pageTitle} percentage={percentage} />
             <Day>
-                {habits.map((hab) => <Habit habit={hab} />)}
+                {todayHabits.map((hab) => <Habit key={hab.id} habit={hab} />)}
             </Day>
-            <Footer />
+            <Footer percentage={percentage} />
         </>
     );
 }

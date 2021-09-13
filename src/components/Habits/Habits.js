@@ -13,18 +13,50 @@ import CreateHabits from "./CreateHabits";
 import ShowHabits from "./ShowHabits";
 
 export default function Habits() {
-    const {user, token} = useContext(UserContext)
+    let {user, token, habits, setHabits, percentage } = useContext(UserContext)
+    // let [percentage, setPercentage] = useState(0)
 
     const [addHabit, setAddHabit] = useState(false);
-    const [habits, setHabits] = useState([])
-    console.log(token);
+    // const [habits, setHabits] = useState([])
 
-    // useEffect(() => {
-        // if(token) {
-        //     console.log(token)
-        //     listHabit()
-        // }
-    // }, [])
+    const data = [
+        {
+            id: 1,
+            name: "Dormir",
+            days: [1, 3, 5]
+        },
+        {
+            id: 2,
+            name: "Comer",
+            days: [1, 3, 4, 6]
+        }
+    ]
+
+    useEffect(() => {
+        habits = data
+    }, [])
+
+    console.log(percentage);
+
+    useEffect(() => {
+        if(habits === []) {
+            console.log(token)
+            listHabit()
+        }
+    }, [])
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const promise = getHabit(config)
+        promise.then((res) => setHabits(res.data)).catch((err) => console.error)
+
+    }, [])
+    console.log(habits)
 
     function listHabit() {
         const config = {
@@ -33,7 +65,7 @@ export default function Habits() {
             }
         }
         const promise = getHabit(config)
-        promise.then((res) => setHabits([...habits, res.data])).catch((err) => console.error)
+        promise.then((res) => console.log(res.data)).catch((err) => console.error)
     }
     if(habits !== []) {
         console.log(habits)
@@ -46,16 +78,16 @@ export default function Habits() {
     return (
         <>
             <Header />
-            <PageTitle createHabit={createHabit} />
+            <PageTitle createHabit={createHabit} pageTitle="Meus hábitos" percentage={percentage} />
             
             <CreateHabits addHabit={addHabit} setAddHabit={setAddHabit} />
-            {habits !== [] ?
-                <ShowHabits listHabit={listHabit}  />
-                : ""
-            }
-            
-            <Paragraph>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Paragraph>
-            <Footer />
+            <HabitStyle confirm={true}>
+                {habits !== [] ?
+                    habits.map((hab) => <ShowHabits habit={hab}  />)                 
+                    : <Paragraph>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</Paragraph>
+                }
+            </HabitStyle>
+            <Footer percentage={percentage} />
         </>
     );
 }
@@ -66,4 +98,8 @@ const Paragraph = styled.p`
     color: #666666;
 
     margin-top: 30px;
+`
+
+const HabitStyle = styled.div`
+    margin-bottom: 120px;
 `

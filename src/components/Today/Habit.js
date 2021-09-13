@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import HabitContext from "../contexts/HabitContext";
 import { Checkbox } from 'react-ionicons'
@@ -6,7 +6,17 @@ import UserContext from "../contexts/UserContext";
 
 export default function Habit({habit}) {
     const { habits } = useContext(UserContext)
+    const [done, setDone] = useState("")
+    let [dados, setDados] = useState({})
     let checkColor;
+
+    useEffect(() => {
+        setDone(checkColor);
+        dados = habits.find((hab) => hab.id === habit.id)
+        console.log(dados)
+    }, [])
+
+    
     console.log(habits)
 
     if(habit.done === false) {
@@ -18,14 +28,10 @@ export default function Habit({habit}) {
     function check() {
         if(habit.done === false) {
             habit.done = true;
-            console.log(checkColor)
             checkColor = "#8fc549"
-            console.log(checkColor)
         } else {
             habit.done = false;
-            console.log(checkColor)
             checkColor = "#ebebeb"
-            console.log(checkColor)
         }
     }
     
@@ -37,10 +43,10 @@ export default function Habit({habit}) {
                 <P>Seu recorde: {habit.highestSequence} dias</P>
             </Definition>
             <Checkbox
-                color={`${checkColor}`} 
+                color={`${done}`} 
                 title={"title"}
-                height="100px"
-                width="100px"
+                height="90px"
+                width="90px"
                 onClick={() => check()}
             />
         </ShowDay>
@@ -71,7 +77,7 @@ const Definition = styled.div`
 `
 
 const HabitName = styled.h2`
-    width: 55vw;
+    width: 60vw;
 
     color: #666666;
     font-size: 20px;
@@ -82,7 +88,7 @@ const HabitName = styled.h2`
 `
 
 const P = styled.p`
-    width: 55vw;
+    width: 60vw;
 
     color: #666666;
     font-size: 12px;

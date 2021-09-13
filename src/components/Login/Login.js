@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
+import Loader from "react-loader-spinner";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getHabit, postLogInto } from "../../service/trackIt";
 
 import UserContext from "../contexts/UserContext";
-import Button from "../shared/ ButtonActions";
+import Button from "../shared/ButtonActions";
 import Input from "../shared/InputStyle";
 
 export default function Login({ setUser, setToken }) {
@@ -18,6 +19,7 @@ export default function Login({ setUser, setToken }) {
     // const name = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [nameButton, setNameButton] = useState("Entrar");
 
     const [list, setList] = useState([]);
     const body = {
@@ -26,14 +28,21 @@ export default function Login({ setUser, setToken }) {
     }
     function login(event) {
         event.preventDefault();
-        
+
+        setNameButton(<Loader
+            type="ThreeDots"
+            color="#ffffff"
+            height={40}
+            width={60}
+            timeout={3000} //3 secs
+        />)
         console.log(body)
 
         postLogInto(body).then((res) => {
             setToken(res.data.token)
             setUser({name: res.data.name,
                     image: res.data.image})
-            history.push("/habitos")
+            history.push("/hoje")
             console.log(res.data.token)
             console.log(res.data)
         });
@@ -59,7 +68,10 @@ export default function Login({ setUser, setToken }) {
                 <Logo src="../../../assets/logo.png" />
                 <Input type="email" placeholder="email" value={email} onChange={(event) => (setEmail(event.target.value))} />
                 <Input type="password" placeholder="senha" value={password} onChange={(event) => (setPassword(event.target.value))} />
-                <Button type="submit">Entrar</Button>
+                <Button type="submit">
+                    {nameButton}
+                </Button>
+                
             </Form>
             <Link to="/cadastro">
                 Não tem uma conta? Cadastre-se!

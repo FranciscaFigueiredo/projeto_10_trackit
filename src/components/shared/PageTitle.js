@@ -1,21 +1,30 @@
 import styled from "styled-components";
 
-export default function PageTitle({createHabit, habit, pageTitle}) {
+export default function PageTitle({createHabit, habit, pageTitle, percentage}) {
     let text = "";
+    let create = ""
 
-    if(habit = false) {
-        text = "Nenhum hábito concluído ainda"
+    if(!percentage) {
+        text = <h4>Nenhum hábito concluído ainda</h4>
     } else {
-        text = "67% dos hábitos concluídos"
+        text = <h4>{percentage}% dos hábitos concluídos`</h4>
+    }
+
+    if(!habit) {
+        text = "";
+    }
+
+    if (pageTitle === "Meus hábitos") {
+        create = <AddHabit onClick={() => (createHabit())}>+</AddHabit>
     }
 
     return (
         <Top>
-            <Text>
+            <Text habit={habit} >
                 <h2>{pageTitle}</h2>
-                <h4>{text}</h4>
+                {text}
             </Text>
-            <AddHabit onClick={() => (createHabit())}>+</AddHabit>
+            {create}
         </Top>
     );
 }

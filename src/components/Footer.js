@@ -4,15 +4,22 @@ import {
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { Link, useHistory } from "react-router-dom";
 
-export default function Footer() {
-    const percentage = 66;
+export default function Footer({percentage}) {
+
+    const history = useHistory();
+    function redirect(route) {
+        console.log(route)
+        history.push(`${route}`)
+    }
+    // const percentage = 66;
     return (
         <FooterStyle>
             <FooterContent>
-                <H4>Hábitos</H4>
-                
-                <ProgressBar>
+                <H4 onClick={() => redirect("/habitos")} >Hábitos</H4>
+
+                <ProgressBar onClick={() => redirect("/hoje")}>
                     <CircularProgressbar
                         value={percentage}
                         text="Hoje"
@@ -26,7 +33,7 @@ export default function Footer() {
                         })}
                     />
                 </ProgressBar>
-                <H4>Histórico</H4>
+                <H4 onClick={() => redirect("/historico")}>Histórico</H4>
             </FooterContent>
         </FooterStyle>
         
@@ -55,6 +62,10 @@ const FooterContent = styled.div`
 
     margin: 0 auto;
     position: relative;
+
+    a {
+        text-decoration: none;
+    }
 `
 
 const H4 = styled.h4`

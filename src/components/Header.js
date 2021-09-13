@@ -1,11 +1,20 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import UserContext from './contexts/UserContext';
 
 export default function Header() {
+    const {user, token} = useContext(UserContext);
+    let image = "../../assets/profile.jpg";
+
+    if(user) {
+        image = user.image;
+    }
+    
     return (
         <Navbar>
             <Top>
                 <h1>TrackIt</h1>
-                <Image />
+                <Image src={image} />
             </Top>
         </Navbar>
     )
@@ -27,22 +36,24 @@ const Top = styled.div`
     width: 90vw;
     height: 70px;
 
-    font-family: 'Playball', cursive;
-    font-size: 20px;
-    color: #ffffff;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     margin: 0 auto;
+
+    h1 {
+        font-family: 'Playball', cursive;
+        font-size: 35px;
+        color: #ffffff;
+    }
 `
 
 const Image = styled.img`
     width: 51px;
     height: 51px;
 
-    background-image: url("../../assets/profile.jpg");
     border-radius: 50px;
     box-sizing: content-box;
     object-fit: cover;

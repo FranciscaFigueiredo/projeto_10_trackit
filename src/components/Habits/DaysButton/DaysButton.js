@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function DaysButton({ day, index, selectDay }) {
+export default function DaysButton({ day, index, disable, days, selectDay }) {
+    let color = false;
+
+    if(days && days.find((d) => d === index)) {
+        color = true
+    }
+
     return (
-        <DaysStyle index={index} onClick={() => {
+        <DaysStyle index={index} color={color} disable={disable} onClick={() => {
             selectDay(index);
         }} >{day}</DaysStyle>
     );
@@ -20,5 +26,5 @@ const DaysStyle = styled.button`
 
     border-radius: 5px;
     border: 1px solid #d4d4d4;
-    background-color: #ffffff;
+    background-color: ${ (props) => (props.color === true ? "#d4d4d4" : "#ffffff") };
 `

@@ -8,6 +8,7 @@ import HabitContext from "./contexts/HabitContext";
 import UserContext from "./contexts/UserContext";
 
 import Habits from "./Habits/Habits";
+import Historic from "./Historic/Historic";
 import CreateLogin from "./Login/CreateLogin";
 import Login from "./Login/Login";
 import Today from "./Today/Today";
@@ -19,19 +20,10 @@ export default function App() {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const [habits, setHabits] = useState([]);
+    let [percentage, setPercentage] = useState(0);
 
-    const data = [
-        {
-            id: 1,
-            name: "Dormir",
-            days: [1, 3, 5]
-        },
-        {
-            id: 2,
-            name: "Comer",
-            days: [1, 3, 4, 6]
-        }
-    ]
+    const screenHeight = window.screen.height
+    console.log(screenHeight)
 
     const today = [
         {
@@ -49,14 +41,14 @@ export default function App() {
             "highestSequence": 3
         },
         {
-            "id": 2,
+            "id": 4,
             "name": "Assistir",
             "done": false,
             "currentSequence": 7,
             "highestSequence": 8
         },
         {
-            "id": 2,
+            "id": 9,
             "name": "Assistir",
             "done": false,
             "currentSequence": 7,
@@ -78,10 +70,10 @@ export default function App() {
     console.log(habits)
 
     return (
-        <UserContext.Provider value={{user, token, habits}} >
+        <UserContext.Provider value={{user, token, habits, setHabits, percentage, setPercentage}} >
             <BrowserRouter>
                 <Page token={token}>
-                    <Container>
+                    <Container screenHeight={screenHeight} >
                         <Switch>
                             <Route path="/" exact>
                                 <Login setUser={setUser} setToken={setToken} />
@@ -96,6 +88,9 @@ export default function App() {
                                 <Route path="/hoje">
                                     <Today />
                                 </Route>
+                                <Route path="/historico" >
+                                    <Historic />
+                                </Route>
                             </HabitContext.Provider>
                         </Switch>
                     </Container>
@@ -106,11 +101,12 @@ export default function App() {
 }
 
 const Page = styled.div`
-  /* background-color: ${(props) => (props.token === null) ? "#ffffff" : "#f2f2f2"}; */
+  background-color: ${(props) => (props.token === null) ? "#ffffff" : "#f2f2f2"};
 `
 
 const Container = styled.div`
     width: 90vw;
+    height: ${(props) => props.screenHeight > 0 ? `${props.screenHeight}px` : ""};
 
     font-family: 'Lexend Deca', sans-serif;
 

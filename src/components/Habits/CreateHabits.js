@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import { postHabit } from "../../service/trackIt";
 import HabitContext from "../contexts/HabitContext";
@@ -10,17 +11,34 @@ export default function CreateHabits({addHabit, setAddHabit}) {
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
     const {user, token} = useContext(UserContext)
     const {habits, setHabits} = useContext(HabitContext);
-    console.log(user)
+
+    const [nameButton, setNameButton] = useState("Salvar");
     const [habit, setHabit] = useState("");
     const [days, setDays] = useState([]);
+
+    let click = false;
+    let color = false;
     
     function selectDay(day) {
         if (!days.includes(day)) {
+            color = true;
             setDays([...days, day]);
         }
     }
+    
 
     function saveHabit() {
+        click = true;
+        setNameButton(
+            <Loader
+                type="ThreeDots"
+                color="#ffffff"
+                height={40}
+                width={60}
+                timeout={5000} //3 secs
+            />
+        )
+
         const body = {
             name: habit,
             days: days
@@ -36,6 +54,8 @@ export default function CreateHabits({addHabit, setAddHabit}) {
         const promise = postHabit(body, config)
         promise.then((res) => (setHabits([...habits, res.data]), console.log(res))).catch((err) => console.error)
         console.log(habits);
+        click = false;
+        setNameButton("Salvar")
         setHabit("");
         setDays([]);
         setAddHabit(false)
@@ -47,19 +67,19 @@ export default function CreateHabits({addHabit, setAddHabit}) {
                 addHabit === true ?
                     <Create>
                         <Definition>
-                            <Input placeholder="nome do hábito" required value={habit} onChange={(event) => (setHabit(event.target.value))} ></Input>
+                            <Input placeholder="nome do hábito" required value={habit} disabled={click} onChange={(event) => (setHabit(event.target.value))} ></Input>
                             <Buttons>
-                                {weekdays.map((day, index) => (<DaysButton key={index} day={day} index={index} selectDay={selectDay} />))}
+                                {weekdays.map((day, index) => (<DaysButton key={index} color={color} disabled={click} day={day} index={index} selectDay={selectDay} />))}
                             </Buttons>
                         </Definition>
                         <Actions>
-                            <Action name="cancel" onClick={() => (setAddHabit(false))} >Cancelar</Action>
+                            <Action name="cancel" onClick={() => (setAddHabit(false), setHabit(""), setDays([]))} >Cancelar</Action>
                             <Action name="save" onClick={() => {
                                 {(habit !== "" && days.length > 0) ?
                                     saveHabit()
                                     : alert("Campos vazios")
                                 }
-                            }}>Salvar</Action>
+                            }}>{nameButton}</Action>
                         </Actions>
                     </Create>
                 : ""
@@ -73,6 +93,10 @@ const Create = styled.div`
     width: 100%;
     background-color: #ffffff;
     margin-top: 30px;
+
+    padding: 10px 0;
+
+    border-radius: 5px;
 `
 
 const Definition = styled.div`
