@@ -20,6 +20,8 @@ const Navbar = styled.header`
     position: fixed;
     top: 0;
     left: 0;
+
+    z-index: 10;
 `
 const Top = styled.div`
     width: 90vw;

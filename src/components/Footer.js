@@ -6,43 +6,30 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 export default function Footer() {
+    const percentage = 66;
     return (
         <FooterStyle>
             <FooterContent>
                 <H4>Hábitos</H4>
                 
                 <ProgressBar>
-                    <Circle label="">
-                        <CircularProgressbar
-                            value="33%"
-                            text="Hoje"
-                            background
-                            backgroundPadding={6}
-                            styles={buildStyles({
-                                backgroundColor: "#52b6ff",
-                                textColor: "#fff",
-                                pathColor: "#fff",
-                                trailColor: "transparent"
-                            })}
-                        />
-                    </Circle>
+                    <CircularProgressbar
+                        value={percentage}
+                        text="Hoje"
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#52b6ff",
+                            textColor: "#ffffff",
+                            pathColor: "#ffffff",
+                            trailColor: "transparent"
+                        })}
+                    />
                 </ProgressBar>
                 <H4>Histórico</H4>
             </FooterContent>
         </FooterStyle>
         
-    );
-}
-
-function Circle(props) {
-    return (
-        <>
-            <div style={{ marginBottom: 60 }}>
-            <div style={{ marginTop: 30, display: "flex" }}>
-                <div style={{ width: "85px" }}>{props.children}</div>
-            </div>
-            </div>
-        </>
     );
 }
 
@@ -54,6 +41,8 @@ const FooterStyle = styled.footer`
     position: fixed;
     bottom: 0;
     left: 0;
+
+    z-index: 10;
 `
 
 const FooterContent = styled.div`
@@ -81,7 +70,7 @@ const ProgressBar = styled.div`
     justify-content: center;
     align-items: center;
 
-    margin: 0 calc(50vw - 69.5px);
+    margin: 0 calc(50vw - 69.5px) 40px;
 
     overflow: visible;
     

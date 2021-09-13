@@ -14,7 +14,7 @@ export default function CreateLogin() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
-    
+
     const history = useHistory();
 
     console.log(name,
@@ -29,7 +29,8 @@ export default function CreateLogin() {
             password
         }
         console.log(body);
-        postSubscription(body).then((res) => {
+        const promise = postSubscription(body)
+        promise.then((res) => {
             history.push("/")
         }).catch((err) => console.error)
     }
@@ -37,11 +38,13 @@ export default function CreateLogin() {
     return (
         <Logar>
             <Logo src="../../../assets/logo.png" />
-            <Input type="email" placeholder="email" required value={email} onChange={(event) => (setEmail(event.target.value))} />
-            <Input type="password" placeholder="senha" required value={password} onChange={(event) => (setPassword(event.target.value))} />
-            <Input type="text" placeholder="nome" required value={name} onChange={(event) => (setName(event.target.value))} />
-            <Input type="text" placeholder="foto" required value={image} onChange={(event) => (setImage(event.target.value))} />
-            <Button type="submit" onClick={() => createLogin()}>Entrar</Button>
+            <Form onSubmit={createLogin}>
+                <Input type="email" placeholder="email" required value={email} onChange={(event) => (setEmail(event.target.value))} />
+                <Input type="password" placeholder="senha" required value={password} onChange={(event) => (setPassword(event.target.value))} />
+                <Input type="text" placeholder="nome" required value={name} onChange={(event) => (setName(event.target.value))} />
+                <Input type="text" placeholder="foto" required value={image} onChange={(event) => (setImage(event.target.value))} />
+                <Button type="submit">Entrar</Button>
+            </Form>
         </Logar>
     );
 }
@@ -62,4 +65,8 @@ const Logo = styled.img`
     width: 60vw;
     
     margin: 50px auto;
+`
+
+const Form = styled.form`
+    text-align: center;
 `
